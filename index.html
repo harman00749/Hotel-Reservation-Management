@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Palace Hotel - Reservation Management System</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    🏨 Grand Palace Hotel
+    <span>LUXURY COLLECTION - MUSSOORIE</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home', this)">🏠 Home</button>
+    <button class="nav-btn" onclick="showPage('rooms', this)">🛏 Rooms</button>
+    <button class="nav-btn" onclick="showPage('booking', this)">📅 Book Now</button>
+    <button class="nav-btn" onclick="showPage('mybookings', this)">📋 My Bookings</button>
+    <button class="nav-btn" onclick="showPage('feedback', this)">⭐ Feedback</button>
+    <button class="nav-btn primary" onclick="handleAuthNav(this)" id="nav-auth-btn">🔐 Login</button>
+    <button class="nav-btn" onclick="showPage('admin', this)" style="border-color:#ef4444;color:#ef4444">⚙️ Admin</button>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-title">Welcome to Grand Palace Hotel</div>
+    <div class="hero-sub">Paharon ki goad mein, luxury ka anubhav - Mussoorie, Uttarakhand</div>
+    <div class="hero-btns">
+      <button class="btn btn-gold" onclick="showPage('rooms')">🛏 Rooms Dekhen</button>
+      <button class="btn btn-outline" onclick="showPage('booking')">📅 Book Karein</button>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <div class="form-group"><label>Check-in Date</label><input type="date" id="h-checkin"></div>
+    <div class="form-group"><label>Check-out Date</label><input type="date" id="h-checkout"></div>
+    <div class="form-group"><label>Room Type</label>
+      <select id="h-type">
+        <option>All Rooms</option>
+        <option>Single Room</option>
+        <option>Double Room</option>
+        <option>Deluxe Room</option>
+        <option>Suite</option>
+        <option>Family Room</option>
+      </select>
+    </div>
+    <button class="btn btn-gold" onclick="searchRooms()">🔍 Search</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">🛏</div><div class="stat-num">24</div><div class="stat-label">Total Rooms</div></div>
+    <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-num">4.8</div><div class="stat-label">Avg Rating</div></div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num">1,240</div><div class="stat-label">Happy Guests</div></div>
+    <div class="stat-card"><div class="stat-icon">📍</div><div class="stat-num">5★</div><div class="stat-label">Hotel Rating</div></div>
+  </div>
+
+  <div class="card card-gold">
+    <div class="section-title">📍 Hotel Location - Mussoorie, Uttarakhand</div>
+    <div class="map-box">
+      <div style="font-size:2.5rem">🗺️</div>
+      <div style="font-weight:600;color:var(--navy);font-size:1.1rem">Grand Palace Hotel</div>
+      <div style="font-size:.85rem;color:var(--text-muted)">Mall Road, Mussoorie, Uttarakhand 248179</div>
+      <div style="font-size:.8rem;color:var(--text-muted)">📞 +91-98765-43210 | ✉ info@grandpalace.com</div>
+      <div style="font-size:.82rem;color:var(--text-muted)">⏰ Check-in: 12:00 PM | Check-out: 11:00 AM</div>
+      <a href="https://maps.google.com/?q=Mall+Road+Mussoorie+Uttarakhand" target="_blank" style="font-size:.85rem;color:var(--gold);text-decoration:none;font-weight:600;margin-top:.3rem">
+        ▶ Google Maps par Open Karein →
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🌟 Hotel Facilities</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem">
+      <div style="text-align:center;padding:1rem;background:var(--cream);border-radius:8px">🏊 Swimming Pool</div>
+      <div style="text-align:center;padding:1rem;background:var(--cream);border-radius:8px">🍽️ Restaurant</div>
+      <div style="text-align:center;padding:1rem;background:var(--cream);border-radius:8px">💆 Spa & Wellness</div>
+      <div style="text-align:center;padding:1rem;background:var(--cream);border-radius:8px">🅿️ Free Parking</div>
+      <div style="text-align:center;padding:1rem;background:var(--cream);border-radius:8px">📶 Free WiFi</div>
+      <div style="text-align:center;padding:1rem;background:var(--cream);border-radius:8px">🚁 Helipad</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-rooms">
+  <div class="page-title">Our Rooms</div>
+  <div class="page-sub">Har budget ke liye perfect room - luxury se economy tak</div>
+
+  <div class="tabs" id="room-tabs">
+    <button class="tab active" data-filter="all" onclick="filterRooms('all',this)">All Rooms</button>
+    <button class="tab" data-filter="single" onclick="filterRooms('single',this)">Single</button>
+    <button class="tab" data-filter="double" onclick="filterRooms('double',this)">Double</button>
+    <button class="tab" data-filter="deluxe" onclick="filterRooms('deluxe',this)">Deluxe</button>
+    <button class="tab" data-filter="suite" onclick="filterRooms('suite',this)">Suite</button>
+    <button class="tab" data-filter="family" onclick="filterRooms('family',this)">Family</button>
+  </div>
+
+  <div class="rooms-grid" id="rooms-grid"></div>
+</div>
+
+<div class="page" id="page-booking">
+  <div class="page-title">Book a Room</div>
+  <div class="page-sub">Apni booking complete karein - sirf 3 steps mein!</div>
+
+  <div class="progress-steps">
+    <div class="step active" id="bs1"><div class="step-num">1</div><div class="step-label">Details</div></div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step pending" id="bs2"><div class="step-num">2</div><div class="step-label">Confirm</div></div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step pending" id="bs3"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+  </div>
+
+  <div id="booking-step1">
+    <div class="card card-gold">
+      <div class="section-title">📋 Guest & Room Details</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Guest Name *</label><input type="text" id="b-name" placeholder="Poora naam likhein"></div>
+        <div class="form-group"><label>Mobile Number *</label><input type="tel" id="b-mobile" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="form-group"><label>Email Address</label><input type="email" id="b-email" placeholder="email@example.com"></div>
+        <div class="form-group"><label>ID Proof Type</label>
+          <select id="b-id">
+            <option>Aadhar Card</option><option>PAN Card</option><option>Passport</option><option>Voter ID</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Room Type *</label>
+          <select id="b-room" onchange="updatePrice()">
+            <option value="">-- Room Select Karein --</option>
+            <option value="single|800">Single Room — ₹800/night</option>
+            <option value="double|1500">Double Room — ₹1,500/night</option>
+            <option value="deluxe|2500">Deluxe Room — ₹2,500/night</option>
+            <option value="suite|5000">Suite — ₹5,000/night</option>
+            <option value="family|3500">Family Room — ₹3,500/night</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Number of Guests</label>
+          <select id="b-guests">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Check-in Date *</label>
+          <input type="date" id="b-checkin" onchange="updatePrice()">
+          <small style="color:var(--text-muted);font-size:.75rem">Check-in time: 12:00 PM</small>
+        </div>
+        <div class="form-group">
+          <label>Check-out Date *</label>
+          <input type="date" id="b-checkout" onchange="updatePrice()">
+          <small style="color:var(--text-muted);font-size:.75rem">Check-out time: 11:00 AM</small>
+        </div>
+        <div class="form-group form-full">
+          <label>Special Requests</label>
+          <textarea id="b-special" rows="2" placeholder="Koi khaas zaroorat ho toh yahan likhein (extra bed, floor preference, diet restrictions...)"></textarea>
+        </div>
+      </div>
+      <div id="price-summary" style="display:none;margin-top:1rem;padding:1rem;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)">
+        <div style="font-weight:600;color:var(--navy)" id="price-detail"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="goToStep2()">Aage Badhein →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="booking-step2" style="display:none">
+    <div class="card card-gold">
+      <div class="section-title">✅ Booking Confirm Karein</div>
+      <div id="booking-summary" style="margin-bottom:1.2rem"></div>
+      <div class="alert alert-warning">
+        ⚠️ Cancellation Policy: Booking cancel karne ke liye check-in se 24 ghante pehle cancel karna padega, warna 1 raat ka charge lagega.
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="backToStep1()">← Wapas Jaayein</button>
+        <button class="btn btn-gold" onclick="goToStep3()">Payment Karein →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="booking-step3" style="display:none">
+    <div class="card card-gold">
+      <div class="section-title">💳 Payment</div>
+      <div class="payment-layout">
+        <div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label>Payment Method Chunein</label>
+            <select id="pay-method" onchange="togglePayMethod()">
+              <option value="upi">UPI / QR Scanner</option>
+              <option value="card">Credit / Debit Card</option>
+              <option value="cash">Cash at Hotel</option>
+            </select>
+          </div>
+
+          <div id="pay-upi">
+            <div class="alert alert-info">Please pay</div>
+            <div class="qr-box">
+              <div class="amount-show" id="qr-amount">₹0</div>
+              <div style="font-size:.84rem;opacity:.76;text-align:center">Grand Palace Hotel - Mussoorie</div>
+              <div class="qr-frame">
+                <img class="qr-photo" src="HARMAN SCAN.jpeg" alt="Harmanpreet Singh UPI QR Scanner">
+              </div>
+              <div class="upi-id">UPI ID: harmanpreet2004@oksbi</div>
+              <div style="font-size:.78rem;opacity:.72;text-align:center">
+                📲 Google Pay / PhonePe / Paytm / BHIM se scan karein
+              </div>
+              <div style="font-size:.76rem;opacity:.62;text-align:center">
+              </div>
+            </div>
+          </div>
+
+          <div id="pay-card" style="display:none">
+            <div class="form-group" style="margin-bottom:.8rem">
+              <label>Card Number</label>
+              <input type="text" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(.{4})/g,'$1 ').trim()">
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label>Expiry Date</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+              <div class="form-group"><label>CVV</label><input type="password" placeholder="***" maxlength="3"></div>
+            </div>
+            <div class="form-group" style="margin-top:.8rem">
+              <label>Cardholder Name</label>
+              <input type="text" placeholder="Name as on card">
+            </div>
+          </div>
+
+          <div id="pay-cash" style="display:none">
+            <div class="alert alert-info" style="flex-direction:column;align-items:flex-start;gap:.3rem">
+              <div>✅ Check-in ke waqt hotel reception par cash payment karein.</div>
+              <div>💰 Total Amount: <span id="cash-amount" style="font-weight:700;font-size:1rem"></span></div>
+              <div style="font-size:.8rem">📍 Reception counter - Ground Floor</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-panel">
+          <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:1rem;border-bottom:1px solid var(--cream-dark);padding-bottom:.5rem">
+            📋 Booking Summary
+          </div>
+          <div id="final-summary" style="font-size:.88rem;line-height:2.2;color:var(--text-main)"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="backToStep2()">← Wapas</button>
+        <button class="btn btn-gold" onclick="confirmBooking()">✅ Booking Confirm Karein</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-mybookings">
+  <div class="page-title">My Bookings</div>
+  <div class="page-sub">Apni sabhi bookings yahan dekhen aur manage karein</div>
+
+  <div class="card card-gold">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Room</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Guests</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="bookings-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-feedback">
+  <div class="page-title">Feedback & Rating</div>
+  <div class="page-sub">Aapki raay hamare liye bahut zaroori hai - apna anubhav share karein</div>
+
+  <div class="two-col">
+    <div class="card card-gold">
+      <div class="section-title">⭐ Rate Your Stay</div>
+      <div class="feedback-card">
+        <div class="rating-row">
+          <span class="rating-label">🧹 Cleanliness</span>
+          <div class="stars" id="stars-1" onclick="setRating(1,event)">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-label">🙋 Service Quality</span>
+          <div class="stars" id="stars-2" onclick="setRating(2,event)">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-label">🍽️ Food & Dining</span>
+          <div class="stars" id="stars-3" onclick="setRating(3,event)">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="rating-row">
+          <span class="rating-label">📍 Location</span>
+          <div class="stars" id="stars-4" onclick="setRating(4,event)">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="rating-row" style="border:none">
+          <span class="rating-label">💰 Value for Money</span>
+          <div class="stars" id="stars-5" onclick="setRating(5,event)">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Your Review</label>
+        <textarea id="review-text" rows="4" placeholder="Apna anubhav yahan share karein..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="reviewer-name" placeholder="Aapka naam">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="submitFeedback()">📤 Submit Feedback</button>
+      </div>
+      <div id="feedback-msg" style="margin-top:.8rem"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">💬 Recent Guest Reviews</div>
+      <div id="reviews-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-login">
+  <div style="max-width:440px;margin:2rem auto">
+    <div class="card card-gold">
+      <div class="tabs">
+        <button class="tab active" id="tab-login" onclick="switchAuthTab('login')">🔐 Login</button>
+        <button class="tab" id="tab-register" onclick="switchAuthTab('register')">📝 Register</button>
+      </div>
+
+      <div id="auth-login">
+        <div class="section-title">Guest Login</div>
+        <div class="form-group" style="margin-bottom:.8rem">
+          <label>Email / Mobile</label>
+          <input type="text" id="l-email" placeholder="Email ya mobile number">
+        </div>
+        <div class="form-group" style="margin-bottom:.8rem">
+          <label>Password</label>
+          <input type="password" id="l-pass" placeholder="Password">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-gold" style="width:100%" onclick="doLogin()">Login →</button>
+        </div>
+        <div id="login-msg" style="margin-top:.8rem"></div>
+        <div style="margin-top:1rem;text-align:center;padding:.8rem;background:var(--cream);border-radius:8px;font-size:.82rem;color:var(--text-muted)">
+          Demo: <b>guest@hotel.com</b> / <b>1234</b>
+        </div>
+      </div>
+
+      <div id="auth-register" style="display:none">
+        <div class="section-title">New Guest Registration</div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Full Name *</label><input type="text" id="r-name" placeholder="Poora naam"></div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Email *</label><input type="email" id="r-email" placeholder="Email address"></div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Mobile *</label><input type="tel" id="r-mobile" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Password *</label><input type="password" id="r-pass" placeholder="Strong password banayein"></div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Confirm Password *</label><input type="password" id="r-pass2" placeholder="Password dobara likhein"></div>
+        <div class="btn-row">
+          <button class="btn btn-gold" style="width:100%" onclick="doRegister()">Register Karein →</button>
+        </div>
+        <div id="reg-msg" style="margin-top:.8rem"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-admin">
+  <div id="admin-login-form">
+    <div style="max-width:400px;margin:2rem auto">
+      <div class="card card-gold">
+        <div class="section-title">⚙️ Admin Login</div>
+        <div class="alert alert-info" style="font-size:.82rem">Sirf authorized staff ke liye</div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Admin ID</label><input type="text" id="a-id" placeholder="admin"></div>
+        <div class="form-group" style="margin-bottom:.8rem"><label>Password</label><input type="password" id="a-pass" placeholder="admin123"></div>
+        <div class="btn-row">
+          <button class="btn btn-navy" style="width:100%" onclick="adminLogin()">Admin Login →</button>
+        </div>
+        <div id="admin-login-msg" style="margin-top:.8rem"></div>
+        <div style="margin-top:.8rem;font-size:.78rem;color:var(--text-muted);text-align:center">Demo: admin / admin123</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="admin-panel" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+      <div>
+        <div class="page-title">⚙️ Admin Dashboard</div>
+        <div class="page-sub">Hotel ka poora control aapke haath mein</div>
+      </div>
+      <button class="btn btn-danger" onclick="adminLogout()">🚪 Logout</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num">₹2.4L</div><div class="stat-label">Aaj ki Kamai</div></div>
+      <div class="stat-card"><div class="stat-icon">🛏</div><div class="stat-num">18/24</div><div class="stat-label">Rooms Occupied</div></div>
+      <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num">6</div><div class="stat-label">New Bookings</div></div>
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num">34</div><div class="stat-label">Current Guests</div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="adminTab('rooms-mgmt',this)">🛏 Rooms</button>
+      <button class="tab" onclick="adminTab('bookings-mgmt',this)">📋 Bookings</button>
+      <button class="tab" onclick="adminTab('customers-mgmt',this)">👥 Customers</button>
+      <button class="tab" onclick="adminTab('payments-mgmt',this)">💳 Payments</button>
+      <button class="tab" onclick="adminTab('staff-mgmt',this)">🧑‍💼 Staff</button>
+      <button class="tab" onclick="adminTab('reports-mgmt',this)">📊 Reports</button>
+    </div>
+
+    <div id="admin-rooms-mgmt">
+      <div class="card card-gold">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem">
+          <div class="section-title" style="margin:0">Room Management</div>
+          <button class="btn btn-gold btn-sm" onclick="document.getElementById('modal-room').classList.add('open')">+ New Room Add</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Room No.</th><th>Type</th><th>Floor</th><th>Price/Night</th><th>Max Guests</th><th>Status</th><th>Facilities</th><th>Actions</th></tr></thead>
+            <tbody id="admin-rooms-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-bookings-mgmt" style="display:none">
+      <div class="card card-gold">
+        <div class="section-title">Booking Management</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Booking ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Amount</th><th>Status</th><th>Update</th></tr></thead>
+            <tbody id="admin-bookings-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-customers-mgmt" style="display:none">
+      <div class="card card-gold">
+        <div class="section-title">Customer Management</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>Email</th><th>Total Bookings</th><th>Total Spent</th><th>Status</th></tr></thead>
+            <tbody id="admin-customers-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-payments-mgmt" style="display:none">
+      <div class="card card-gold">
+        <div class="section-title">Payment Management</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Payment ID</th><th>Booking ID</th><th>Guest</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="admin-payments-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-staff-mgmt" style="display:none">
+      <div class="card card-gold">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem">
+          <div class="section-title" style="margin:0">Staff Management</div>
+          <button class="btn btn-navy btn-sm" onclick="document.getElementById('modal-staff').classList.add('open')">+ Staff Add Karein</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Staff ID</th><th>Name</th><th>Role</th><th>Department</th><th>Mobile</th><th>Shift</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="admin-staff-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-reports-mgmt" style="display:none">
+      <div class="card card-gold">
+        <div class="section-title">📊 Reports & Analytics</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-num">₹12.6L</div><div class="stat-label">Is Mahine ki Kamai</div></div>
+          <div class="stat-card"><div class="stat-icon">🛏</div><div class="stat-num">87%</div><div class="stat-label">Occupancy Rate</div></div>
+          <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-num">4.8/5</div><div class="stat-label">Guest Satisfaction</div></div>
+        </div>
+        <div style="padding:1.5rem;background:var(--cream);border-radius:8px;margin-bottom:1rem">
+          <div style="font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:1rem;text-align:center">Monthly Revenue (₹ Lakhs)</div>
+          <div style="display:flex;align-items:flex-end;gap:.8rem;height:150px;justify-content:center;padding:0 1rem">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem"><div style="background:var(--gold);width:36px;height:80px;border-radius:4px 4px 0 0"></div><div style="font-size:.72rem;color:var(--text-muted)">Jan</div><div style="font-size:.7rem;font-weight:600">8.2</div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem"><div style="background:var(--gold);width:36px;height:65px;border-radius:4px 4px 0 0"></div><div style="font-size:.72rem;color:var(--text-muted)">Feb</div><div style="font-size:.7rem;font-weight:600">6.8</div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem"><div style="background:var(--gold);width:36px;height:95px;border-radius:4px 4px 0 0"></div><div style="font-size:.72rem;color:var(--text-muted)">Mar</div><div style="font-size:.7rem;font-weight:600">9.7</div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem"><div style="background:var(--gold);width:36px;height:75px;border-radius:4px 4px 0 0"></div><div style="font-size:.72rem;color:var(--text-muted)">Apr</div><div style="font-size:.7rem;font-weight:600">7.6</div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem"><div style="background:rgba(201,168,76,.4);width:36px;height:120px;border-radius:4px 4px 0 0;border:2px dashed var(--gold)"></div><div style="font-size:.72rem;color:var(--gold);font-weight:700">May</div><div style="font-size:.7rem;font-weight:600;color:var(--gold)">12.6</div></div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-navy" onclick="alert('PDF report download feature - production mein implement hoga!')">📥 PDF Report Download</button>
+          <button class="btn btn-outline" onclick="alert('Excel export feature - production mein implement hoga!')">📊 Excel Export</button>
+          <button class="btn btn-gold btn-sm" onclick="alert('Email report feature - production mein implement hoga!')">📧 Email Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-room">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-room')">✕</button>
+    <div class="modal-title">🛏 New Room Add Karein</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Room Number *</label><input type="text" id="m-roomno" placeholder="101"></div>
+      <div class="form-group"><label>Floor</label>
+        <select id="m-floor"><option>Ground Floor</option><option>1st Floor</option><option>2nd Floor</option><option>3rd Floor</option></select>
+      </div>
+      <div class="form-group"><label>Room Type *</label>
+        <select id="m-type"><option>Single Room</option><option>Double Room</option><option>Deluxe Room</option><option>Suite</option><option>Family Room</option></select>
+      </div>
+      <div class="form-group"><label>Price per Night (₹) *</label><input type="number" id="m-price" placeholder="1500"></div>
+      <div class="form-group"><label>Max Guests</label><input type="number" id="m-maxguests" placeholder="2" value="2"></div>
+      <div class="form-group"><label>Status</label>
+        <select id="m-status"><option>available</option><option>occupied</option><option>maintenance</option></select>
+      </div>
+      <div class="form-group form-full"><label>Facilities (comma separated)</label>
+        <input type="text" id="m-facilities" placeholder="AC, WiFi, TV, Balcony, Mini Bar, Geyser">
+      </div>
+      <div class="form-group form-full"><label>Description</label>
+        <textarea id="m-desc" rows="2" placeholder="Room ki description likhein..."></textarea>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-gold" onclick="addRoom()">✅ Room Add Karein</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-room')">Cancel</button>
+    </div>
+    <div id="room-add-msg" style="margin-top:.8rem"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-staff">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-staff')">✕</button>
+    <div class="modal-title">🧑‍💼 Staff Add Karein</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Staff Name *</label><input type="text" id="s-name" placeholder="Poora naam"></div>
+      <div class="form-group"><label>Mobile *</label><input type="tel" id="s-mobile" placeholder="+91 XXXXX XXXXX"></div>
+      <div class="form-group"><label>Role *</label>
+        <select id="s-role"><option>Receptionist</option><option>Housekeeping</option><option>Chef</option><option>Security Guard</option><option>Manager</option><option>Driver</option><option>Waiter</option><option>Maintenance</option></select>
+      </div>
+      <div class="form-group"><label>Department</label>
+        <select id="s-dept"><option>Front Desk</option><option>Rooms</option><option>Kitchen</option><option>Security</option><option>Administration</option><option>Transport</option></select>
+      </div>
+      <div class="form-group"><label>Shift</label>
+        <select id="s-shift"><option>Morning (6AM-2PM)</option><option>Evening (2PM-10PM)</option><option>Night (10PM-6AM)</option></select>
+      </div>
+      <div class="form-group"><label>Salary (₹/month)</label><input type="number" id="s-salary" placeholder="18000"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-navy" onclick="addStaff()">✅ Staff Add Karein</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-staff')">Cancel</button>
+    </div>
+    <div id="staff-add-msg" style="margin-top:.8rem"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-success">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
+    <div class="modal-title" style="text-align:center;color:var(--success)">Booking Confirmed!</div>
+    <div style="color:var(--text-muted);margin-bottom:1rem;font-size:.9rem" id="success-details"></div>
+    <div class="alert alert-success" id="success-id" style="justify-content:center"></div>
+    <div style="margin-top:1rem;padding:1rem;background:var(--cream);border-radius:8px;font-size:.82rem;color:var(--text-muted)">
+      📧 Confirmation email bhej diya gaya hai.<br>
+      📍 Check-in time: 12:00 PM | Check-out: 11:00 AM<br>
+      📞 Koi sawaal ho: +91-4565254841
+    </div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.2rem">
+      <button class="btn btn-gold" onclick="closeModal('modal-success');showPage('mybookings')">📋 My Bookings Dekhen</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-success');showPage('home')">🏠 Home</button>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
